@@ -16,56 +16,53 @@
 #include "get_next_line.h"
 #include "get_next_line_utils.c"
 
-char	*check_remainder(char	*remainder, char	**line)
+char	*check_remainder(char	**remainder, char	**line)
 {
 	char	*p_n;
 
 	p_n = NULL;
-	if (remainder)
+	if (*remainder)
 	{
-		if ((p_n = ft_strchr(remainder, '\n')))
+		if ((p_n = ft_strchr(*remainder, '\n')))
 		{
 			*p_n = '\0';
-			p_n++;
-			*line = ft_strdup(remainder);
-			*remainder = *p_n;
+			*line = *remainder;
+			*remainder = ft_strdup(++p_n);
 		}
 		else
 		{
-			*line = remainder;
-			remainder = NULL;
+			*line = *remainder;
+			*remainder = NULL;
 		}
 	}
-	return (*line);
+	else
+		*line = ft_strnew(1);
+	return (p_n);
 }
 
 int     get_next_line(int fd, char  **line)
 {
 	char			*buf;	
 	int				count;
-	int				flag;
 	char			*p_n;
 	char			*tmp;
 	static char		*remainder;
 
 	p_n = NULL;
-	flag = 1;
 	count = 0;
 	if (!fd || !line || BUFFER_SIZE < 1)
 		return (-1);
 	if (!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
 		return (-1);
-	if ((remainder && (*line = check_remainder(remainder, line))));
-	else
-		*line  = ft_strnew(1);
-	while((flag && (count = read(fd, &buf, BUFFER_SIZE))))
+	if (remainder)
+		p_n = check_remainder(&remainder, line);
+	while(!p_n && (count = read(fd, &buf, BUFFER_SIZE)))
 	{
 		buf[count] = '\0';
 		if ((p_n = ft_strchr(buf, '\n')))
 		{
-			*p_n++ = '\0';
-			flag = 0;
-			remainder = p_n;
+			*p_n = '\0';
+			remainder = ft_strdup(++p_n);
 		}
 		tmp = *line;
 		*line = ft_strjoin(*line, buf);
