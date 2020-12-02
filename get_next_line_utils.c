@@ -6,13 +6,13 @@
 /*   By: walethea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 17:21:16 by walethea          #+#    #+#             */
-/*   Updated: 2020/12/02 18:40:47 by walethea         ###   ########.fr       */
+/*   Updated: 2020/12/02 19:21:22 by walethea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *str, int symbol)
+char		*ft_strchr(const char *str, int symbol)
 {
 	int			i;
 
@@ -28,7 +28,7 @@ char	*ft_strchr(const char *str, int symbol)
 	return (NULL);
 }
 
-char	*ft_strdup(const char *src)
+char		*ft_strdup(const char *src)
 {
 	int			i;
 	int			len;
@@ -60,7 +60,7 @@ size_t		ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, const char *s2)
+char		*ft_strjoin(char *s1, const char *s2)
 {
 	size_t		i;
 	char		*cat_s;
@@ -86,16 +86,7 @@ char	*ft_strjoin(char *s1, const char *s2)
 	return (cat_s);
 }
 
-char	*start_more_len(unsigned char *sub_s)
-{
-	sub_s = (unsigned char*)malloc(sizeof(unsigned char) * 1);
-	if (!sub_s)
-		return (NULL);
-	*sub_s = '\0';
-	return ((char*)sub_s);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char		*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	size_t			i;
 	size_t			l;
@@ -111,7 +102,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	if (l < len)
 		len = l;
 	if (start >= ft_strlen((char*)s))
-		return (start_more_len(sub_s));
+		return (ft_strdup(""));
 	sub_s = (unsigned char*)malloc(sizeof(unsigned char) * (len + 1));
 	if (!sub_s)
 		return (NULL);

@@ -6,12 +6,11 @@
 /*   By: walethea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 23:32:34 by walethea          #+#    #+#             */
-/*   Updated: 2020/12/02 18:41:45 by walethea         ###   ########.fr       */
+/*   Updated: 2020/12/02 19:22:10 by walethea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "fcntl.h"
 
 char	*check_remainder(char **remainder, char **line)
 {
@@ -45,7 +44,7 @@ int		get_next_line(int fd, char **line)
 	static char		*remainder;
 
 	buf = 0;
-	if ((!fd || !line || BUFFER_SIZE < 1)
+	if ((fd < 0 || !line || BUFFER_SIZE < 1)
 	|| (!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1)))
 	|| (read(fd, buf, 0) == -1)))
 		return (-1);
@@ -63,5 +62,5 @@ int		get_next_line(int fd, char **line)
 			return (-1);
 	}
 	free(buf);
-	return ((count || p_n) ? 1 : 0);
+	return ((count || p_n) ? 1 : 0);~
 }
