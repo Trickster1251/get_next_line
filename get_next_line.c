@@ -6,17 +6,14 @@
 /*   By: walethea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 23:32:34 by walethea          #+#    #+#             */
-/*   Updated: 2020/11/26 23:32:35 by walethea         ###   ########.fr       */
+/*   Updated: 2020/12/02 18:41:45 by walethea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include <fcntl.h>
 #include "get_next_line.h"
-#include "get_next_line_utils.c"
+#include "fcntl.h"
 
-char	*check_remainder(char	**remainder, char	**line)
+char	*check_remainder(char **remainder, char **line)
 {
 	char	*p_n;
 
@@ -36,59 +33,35 @@ char	*check_remainder(char	**remainder, char	**line)
 		}
 	}
 	else
-		*line = ft_strnew(1);
+		*line = ft_strdup("");
 	return (p_n);
 }
 
-int     get_next_line(int fd, char  **line)
+int		get_next_line(int fd, char **line)
 {
-	char			*buf;	
+	char			*buf;
 	int				count;
 	char			*p_n;
-	char			*tmp;
 	static char		*remainder;
 
-	p_n = NULL;
-	count = 0;
-	if (!fd || !line || BUFFER_SIZE < 1)
+	buf = 0;
+	if ((!fd || !line || BUFFER_SIZE < 1)
+	|| (!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1)))
+	|| (read(fd, buf, 0) == -1)))
 		return (-1);
-	if (!(buf = (char*)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
-		return (-1);
-	if (remainder)
-		p_n = check_remainder(&remainder, line);
-	while(!p_n && (count = read(fd, &buf, BUFFER_SIZE)))
+	p_n = check_remainder(&remainder, line);
+	while (!p_n && (count = read(fd, buf, BUFFER_SIZE)))
 	{
 		buf[count] = '\0';
 		if ((p_n = ft_strchr(buf, '\n')))
 		{
 			*p_n = '\0';
-			remainder = ft_strdup(++p_n);
+			if (!(remainder = ft_strdup(++p_n)))
+				return (-1);
 		}
-		tmp = *line;
-		*line = ft_strjoin(*line, buf);
-		free(tmp);
+		if (!(*line = ft_strjoin(*line, buf)))
+			return (-1);
 	}
 	free(buf);
-	return (1);
-}
-
-int main()
-{
-	int     fd;
-	int     i;
-	char    *line;
-	fd = open("text", O_RDONLY);
-
-	// get_next_line(fd ,&line);
-	// printf("%s\n", line);
-
-	// get_next_line(fd ,&line);
-	// printf("%s\n", line);
-
-	while((i = get_next_line(fd, &line)) > 0)
-	{
-		printf("%s\n  %d\n", line, i);
-		free(line);
-	}
-	close(fd);
+	return ((count || p_n) ? 1 : 0);
 }

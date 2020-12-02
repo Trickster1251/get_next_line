@@ -6,23 +6,11 @@
 /*   By: walethea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/27 17:21:16 by walethea          #+#    #+#             */
-/*   Updated: 2020/11/27 17:21:19 by walethea         ###   ########.fr       */
+/*   Updated: 2020/12/02 18:40:47 by walethea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-char	*ft_strnew(size_t size)
-{
-	char	*str;
-
-	if (!(str = (char *)malloc(sizeof(char) * (size + 1))))
-		return (NULL);
-	str[size] = '\0';
-	while (size--)
-		str[size] = '\0';
-	return (str);
-}
 
 char	*ft_strchr(const char *str, int symbol)
 {
@@ -72,7 +60,7 @@ size_t		ft_strlen(char *str)
 	return (i);
 }
 
-char	*ft_strjoin(const char *s1, const char *s2)
+char	*ft_strjoin(char *s1, const char *s2)
 {
 	size_t		i;
 	char		*cat_s;
@@ -88,6 +76,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 		cat_s[i] = s1[i];
 		i++;
 	}
+	free(s1);
 	while (*s2)
 	{
 		cat_s[i] = *s2++;
