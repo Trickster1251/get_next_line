@@ -6,7 +6,7 @@
 /*   By: walethea <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/26 23:32:34 by walethea          #+#    #+#             */
-/*   Updated: 2020/12/02 19:22:10 by walethea         ###   ########.fr       */
+/*   Updated: 2021/01/26 20:48:55 by walethea         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,5 @@ int		get_next_line(int fd, char **line)
 			return (-1);
 	}
 	free(buf);
-	return ((count || p_n) ? 1 : 0);~
+	return ((count || p_n) ? 1 : 0);
 }
